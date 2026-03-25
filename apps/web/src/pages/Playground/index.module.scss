@@ -1,0 +1,24 @@
+.root {
+  display: grid;
+}
+
+.panel {
+  min-height: 280px;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(6, 10, 22, 0.72);
+}
+
+.eyebrow {
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #f3b287;
+}
+
+.description {
+  max-width: 42rem;
+  margin-bottom: 0;
+  line-height: 1.7;
+  color: rgba(244, 238, 227, 0.78);
+}

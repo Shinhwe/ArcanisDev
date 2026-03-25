@@ -1,0 +1,90 @@
+.root {
+  display: grid;
+  gap: 18px;
+}
+
+.hero {
+  padding: 40px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(140deg, rgba(244, 106, 64, 0.2), rgba(18, 18, 26, 0)),
+    linear-gradient(180deg, rgba(11, 16, 32, 0.88), rgba(11, 16, 32, 0.72));
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.28);
+}
+
+.eyebrow {
+  margin-bottom: 14px;
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #f3b287;
+}
+
+.lede {
+  max-width: 52rem;
+  margin: 24px 0 0;
+  font-size: 1.08rem;
+  line-height: 1.7;
+  color: rgba(244, 238, 227, 0.78);
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+
+  span {
+    padding: 10px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background-color: rgba(255, 255, 255, 0.05);
+    font-size: 0.86rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.panel {
+  min-height: 220px;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(6, 10, 22, 0.72);
+
+  h2 {
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+  }
+
+  p {
+    margin-bottom: 0;
+    color: rgba(244, 238, 227, 0.7);
+    line-height: 1.7;
+  }
+}
+
+.trackList {
+  list-style: none;
+
+  li {
+    padding: 14px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(244, 238, 227, 0.86);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding: 28px 24px;
+  }
+
+  .panels {
+    grid-template-columns: 1fr;
+  }
+}

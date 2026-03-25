@@ -37,6 +37,7 @@
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .navLink {
@@ -52,6 +53,39 @@
 .navLinkActive {
   border-color: rgba(241, 164, 107, 0.55);
   background-color: rgba(241, 164, 107, 0.12);
+}
+
+.userBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(149, 212, 184, 0.34);
+  background-color: rgba(149, 212, 184, 0.12);
+  color: #c8f0dc;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+}
+
+.actionButton {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.04);
+  color: rgba(244, 238, 227, 0.88);
+}
+
+.statusMessage,
+.errorMessage {
+  margin: 0 0 14px;
+}
+
+.statusMessage {
+  color: rgba(244, 238, 227, 0.66);
+}
+
+.errorMessage {
+  color: #ff9f8f;
 }
 
 .content {

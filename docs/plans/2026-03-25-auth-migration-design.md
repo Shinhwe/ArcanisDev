@@ -142,6 +142,23 @@ Behavior:
 
 Response shape matches `/register`.
 
+Failure response:
+
+- invalid username
+- invalid password hash match
+- disabled account
+
+All return the same client-facing response:
+
+```json
+{
+  "code": "auth.invalid_credentials",
+  "message": "Invalid username or password."
+}
+```
+
+The backend logs the detailed failure reason internally.
+
 ### `POST /logout`
 
 Requirements:
@@ -179,6 +196,8 @@ Response:
 }
 ```
 
+If the Bearer token is missing or invalid, return `401` with an empty body.
+
 ### Error Response Shape
 
 ```json
@@ -194,6 +213,8 @@ Response:
 ```
 
 `fieldErrors` is optional and only present for validation failures.
+
+Protected auth failures caused by invalid or missing tokens return an empty `401` body instead of a JSON error payload.
 
 ## Backend Design
 

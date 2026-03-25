@@ -1,5 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
+
 builder.Services.Configure<DatabaseOptions>(
     builder.Configuration.GetSection(DatabaseOptions.SectionName));
 
@@ -7,6 +9,9 @@ builder.Services.Configure<DatabaseOptions>(
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<LegacyCmsConnectionFactory>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddSingleton<IAuthTokenFactory, AuthTokenFactory>();
+builder.Services.AddScoped<AuthService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("WebDev", policy =>
@@ -33,8 +38,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<CmsAuthMiddleware>();
 
 app.MapHealthEndpoints();
 app.MapConfigEndpoints();
+app.MapAuthEndpoints();
 
 app.Run();
+
+public partial class Program
+{
+}

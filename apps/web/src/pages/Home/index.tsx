@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+
+import { getHomePageConfig, type HomePageConfig } from './index.service';
 import styles from './index.module.scss';
 
 const tracks = [
@@ -8,6 +11,59 @@ const tracks = [
 ];
 
 const Home = () => {
+  const [homePageConfig, setHomePageConfig] = useState<HomePageConfig | null>(null)
+  const [isSiteConfigLoading, setIsSiteConfigLoading] = useState(true)
+  const [isSiteConfigUnavailable, setIsSiteConfigUnavailable] = useState(false)
+
+  useEffect(() => {
+    let isCurrentRequestActive = true
+
+    getHomePageConfig()
+      .then((responseData) => {
+        if (isCurrentRequestActive === false) {
+          return
+        }
+
+        setHomePageConfig(responseData)
+      })
+      .catch(() => {
+        if (isCurrentRequestActive === false) {
+          return
+        }
+
+        setIsSiteConfigUnavailable(true)
+      })
+      .finally(() => {
+        if (isCurrentRequestActive === false) {
+          return
+        }
+
+        setIsSiteConfigLoading(false)
+      })
+
+    return () => {
+      isCurrentRequestActive = false
+    }
+  }, [])
+
+  const publicSiteLinks =
+    !!homePageConfig === true
+      ? [
+          {
+            href: homePageConfig.discordLink,
+            id: 'discord-link',
+            label: 'Official Discord',
+          },
+          {
+            href: homePageConfig.youtubeLink,
+            id: 'youtube-link',
+            label: 'Official YouTube',
+          },
+        ].filter((linkItem) => {
+          return !!linkItem.href === true
+        })
+      : []
+
   return (
     <section className={styles.root}>
       <div className={styles.hero}>
@@ -45,6 +101,37 @@ const Home = () => {
               <li key={track}>{track}</li>
             ))}
           </ul>
+        </article>
+        <article className={styles.panel}>
+          <h2>Live site config</h2>
+          <p>
+            This route now consumes <code>/api/v1/config</code> through its page-local service
+            and exposes the first migrated public values directly from the new API.
+          </p>
+          <div className={styles.siteConfigState}>
+            {isSiteConfigLoading && (
+              <span className={styles.siteConfigMessage}>Loading public site config...</span>
+            )}
+            {isSiteConfigLoading === false && isSiteConfigUnavailable === true && (
+              <span className={styles.siteConfigMessage}>Public site config is currently unavailable.</span>
+            )}
+            {isSiteConfigLoading === false &&
+              isSiteConfigUnavailable === false &&
+              publicSiteLinks.length === 0 && (
+                <span className={styles.siteConfigMessage}>No public site links are configured yet.</span>
+              )}
+            {publicSiteLinks.length > 0 && (
+              <ul className={styles.siteConfigLinks}>
+                {publicSiteLinks.map((linkItem) => (
+                  <li key={linkItem.id}>
+                    <a href={linkItem.href} rel="noreferrer" target="_blank">
+                      {linkItem.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </article>
       </div>
     </section>

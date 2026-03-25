@@ -22,6 +22,22 @@ const loadPlaygroundRoute = async () => {
   });
 };
 
+const loadLoginRoute = async () => {
+  return import('../../pages/Login').then((module) => {
+    return {
+      Component: module.default,
+    };
+  });
+};
+
+const loadRegisterRoute = async () => {
+  return import('../../pages/Register').then((module) => {
+    return {
+      Component: module.default,
+    };
+  });
+};
+
 const routes: RouteObject[] = [
   {
     path: '/',
@@ -30,6 +46,14 @@ const routes: RouteObject[] = [
       {
         index: true,
         lazy: loadHomeRoute,
+      },
+      {
+        path: 'login',
+        lazy: loadLoginRoute,
+      },
+      {
+        path: 'register',
+        lazy: loadRegisterRoute,
       },
       {
         path: 'playground',

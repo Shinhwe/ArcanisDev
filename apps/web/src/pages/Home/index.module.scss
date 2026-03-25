@@ -85,6 +85,53 @@
   }
 }
 
+.siteConfigState {
+  margin-top: 18px;
+}
+
+.siteConfigMessage {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: rgba(244, 238, 227, 0.78);
+}
+
+.siteConfigLinks {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid rgba(243, 178, 135, 0.35);
+    background-color: rgba(243, 178, 135, 0.08);
+    color: #f8c7a3;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition:
+      transform 160ms ease,
+      border-color 160ms ease,
+      background-color 160ms ease;
+  }
+
+  a:hover {
+    transform: translateY(-1px);
+    border-color: rgba(243, 178, 135, 0.55);
+    background-color: rgba(243, 178, 135, 0.12);
+  }
+}
+
 @media (max-width: 900px) {
   .hero {
     padding: 28px 24px;

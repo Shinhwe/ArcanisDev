@@ -22,7 +22,7 @@ describe('createAppRouter', () => {
 
     expect(
       await screen.findByRole('heading', {
-        name: /react front end\. \.net 10 back end\./i,
+        name: /cms migration workspace/i,
       }),
     ).toBeInTheDocument()
   })
@@ -30,6 +30,6 @@ describe('createAppRouter', () => {
   it('renders the playground page at /playground', async () => {
     render(<RouterProvider router={createAppRouter(['/playground'])} />)
 
-    expect(await screen.findByRole('heading', { name: /playground/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /integration lab/i })).toBeInTheDocument()
   })
 })

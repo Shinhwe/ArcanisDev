@@ -53,6 +53,8 @@ Initial requirements:
 - HTTPS-enabled local development profile
 - room for future feature slices such as `Modules`, `Contracts`, `Infrastructure`
 - permissive development CORS to allow the Vite dev server to call the API
+- versioned RESTful API routes under `/api/v1`
+- resource-oriented endpoint naming with query parameters used for filtering and pagination
 
 No database or authentication code will be added in this phase.
 
@@ -67,6 +69,9 @@ Initial requirements:
 - Vite build target set to `esnext`
 - minimal app shell suitable for later route/module migration
 - no browser compatibility fallbacks or polyfill work
+- shared transport helpers stay under `src/app/http`
+- HTTP request code lives next to the consuming page or component in `index.service.ts`
+- do not introduce a central `src/services` directory during this migration phase
 
 ## Migration Direction
 

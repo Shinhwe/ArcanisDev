@@ -1,8 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<DatabaseOptions>(
+    builder.Configuration.GetSection(DatabaseOptions.SectionName));
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddSingleton<LegacyCmsConnectionFactory>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("WebDev", policy =>
@@ -30,21 +34,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/", () => Results.Ok(new
-{
-    service = "Arcanis API",
-    environment = app.Environment.EnvironmentName,
-    framework = "net10.0",
-}));
-
-app.MapGet("/health", () =>
-{
-    return Results.Ok(new
-    {
-        status = "ok",
-        utc = DateTime.UtcNow,
-    });
-})
-.WithName("GetHealth");
+app.MapHealthEndpoints();
+app.MapConfigEndpoints();
 
 app.Run();

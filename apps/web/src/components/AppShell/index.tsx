@@ -8,10 +8,6 @@ const navigationItems = [
     label: 'Home',
     end: true,
   },
-  {
-    to: '/playground',
-    label: 'Playground',
-  },
 ];
 
 export const AppShell = () => {

@@ -4,7 +4,7 @@
 
 **Goal:** Continue the migration from the legacy PHP CMS to the new `apps/api` + `apps/web` stack, starting from the current initialized baseline in the main repository.
 
-**Architecture:** Keep the PHP site running while the new React frontend and ASP.NET Core API grow in parallel. Migrate in vertical slices: first stabilize the new frontend structure and API foundation, then move read-only public features, then authentication, then user/admin workflows.
+**Architecture:** Keep the PHP site running while the new React frontend and ASP.NET Core API grow in parallel. Execute this plan directly on top of the current repository state instead of re-bootstrapping the apps or introducing a new frontend service root. Reuse the existing shared transport layer in `apps/web/src/app/http`, keep request ownership inside the page or component that consumes it via `index.service.ts`, and expose backend capabilities through versioned RESTful API endpoints under `/api/v1`.
 
 **Tech Stack:** ASP.NET Core 10, React 19, TypeScript, Vite, SCSS, react-router-dom, rxjs, Vitest
 
@@ -20,10 +20,10 @@
 - Verify: `docs/plans/2026-03-25-react-dotnet-migration.md`
 - Verify: `docs/plans/2026-03-25-web-tooling-foundation.md`
 
-**Step 1: Confirm clean git state**
+**Step 1: Record current git state**
 
 Run: `git status --short`
-Expected: no output
+Expected: capture the current working tree status before changes; do not discard unrelated user files just to force a clean state
 
 **Step 2: Confirm latest bootstrap commit**
 
@@ -39,7 +39,12 @@ Read:
 - `apps/web/src/components/AppShell/index.tsx`
 - `apps/api/Program.cs`
 
-**Step 4: Re-run frontend verification**
+**Step 4: Ensure frontend dependencies exist**
+
+Run: `cd apps/web && npm install`
+Expected: local dependencies are installed so `test`, `lint`, and `build` commands are runnable
+
+**Step 5: Re-run frontend verification**
 
 Run:
 - `cd apps/web && npm run test`
@@ -48,7 +53,7 @@ Run:
 
 Expected: all pass
 
-**Step 5: Re-run backend verification**
+**Step 6: Re-run backend verification**
 
 Run: `dotnet build apps/api`
 Expected: build succeeds; current NuGet cache warnings may still appear but there should be `0 errors`
@@ -61,6 +66,7 @@ Expected: build succeeds; current NuGet cache warnings may still appear but ther
 - Delete: `apps/web/src/assets/vite.svg`
 - Review: `apps/web/public/icons.svg`
 - Review: `apps/web/public/favicon.svg`
+- Modify: `apps/web/src/app/router/index.test.tsx`
 - Modify: `apps/web/src/pages/Home/index.tsx`
 - Modify: `apps/web/src/pages/Home/index.module.scss`
 - Modify: `apps/web/src/pages/Playground/index.tsx`
@@ -88,39 +94,38 @@ Run:
 
 Expected: all pass
 
-### Task 3: Add a typed frontend API layer skeleton
+### Task 3: Add a typed page-local API skeleton on top of the existing HttpClient
 
 **Files:**
-- Create: `apps/web/src/services/http/index.ts`
-- Create: `apps/web/src/services/http/index.test.ts`
-- Create: `apps/web/src/services/config/index.ts`
-- Create: `apps/web/src/services/config/index.service.ts`
-- Create: `apps/web/src/services/rankings/index.ts`
-- Create: `apps/web/src/services/rankings/index.service.ts`
+- Verify: `apps/web/src/app/http/HttpClient/index.ts`
+- Verify: `apps/web/src/app/http/HttpClient/index.test.ts`
+- Verify: `apps/web/src/app/http/HttpClientError/index.ts`
+- Create: `apps/web/src/pages/Home/index.service.ts`
+- Create: `apps/web/src/pages/Home/index.service.test.ts`
 - Modify: `apps/web/src/pages/Home/index.tsx`
 
-**Step 1: Write the failing test for the HTTP layer**
+**Step 1: Re-read the shared transport contract**
 
-Test that the HTTP helper builds URLs from a configured API base and returns parsed JSON.
+Read the existing `HttpClient` implementation and tests so the new service layer reuses the current transport behavior instead of duplicating it.
 
-**Step 2: Run the test to verify red**
+**Step 2: Write the failing test for the page-local service**
 
-Run: `cd apps/web && npm run test -- src/services/http/index.test.ts`
-Expected: FAIL because the helper does not exist yet
+Test that the Home page service calls the site config resource through the shared `HttpClient`, returns typed JSON data, and keeps resource semantics out of the transport layer.
 
-**Step 3: Implement the minimal HTTP helper**
+**Step 3: Run the test to verify red**
 
-Add a small fetch wrapper that:
-- reads the API base URL from env
-- returns `Promise`s
-- parses JSON
-- throws on non-2xx responses
+Run: `cd apps/web && npm run test -- src/pages/Home/index.service.test.ts`
+Expected: FAIL because the page-local service module does not exist yet
 
-**Step 4: Add feature-level service placeholders**
+**Step 4: Implement the minimal page-local service**
 
-Create `config` and `rankings` service folders using the repository’s `folder/index.*` convention. If they issue HTTP requests, put request code in `index.service.ts`.
+Create `apps/web/src/pages/Home/index.service.ts` and add the typed config request helper needed by the Home page. Use explicit Promise chains in the service file and keep resource paths inside this page-level module.
 
-**Step 5: Verify green**
+**Step 5: Keep the Home page aligned with the new service boundary**
+
+If the page text or imports need to change so the new service boundary is obvious, update `apps/web/src/pages/Home/index.tsx` accordingly.
+
+**Step 6: Verify green**
 
 Run:
 - `cd apps/web && npm run test`
@@ -135,7 +140,6 @@ Expected: all pass
 - Modify: `apps/api/Program.cs`
 - Create: `apps/api/Endpoints/HealthEndpoints.cs`
 - Create: `apps/api/Endpoints/ConfigEndpoints.cs`
-- Create: `apps/api/Endpoints/RankingsEndpoints.cs`
 - Create: `apps/api/Configuration/DatabaseOptions.cs`
 - Modify: `apps/api/appsettings.json`
 - Modify: `apps/api/appsettings.Development.json`
@@ -152,9 +156,9 @@ Create explicit endpoint registration files so `Program.cs` becomes composition-
 
 Introduce strongly typed configuration for database and integration settings, even if no real DB call is implemented yet.
 
-**Step 4: Add placeholder read-only endpoints**
+**Step 4: Add the site config endpoint**
 
-Create minimal `config` and `rankings` endpoints with static or stubbed responses that match the shape the frontend will consume later.
+Create a minimal RESTful `config` endpoint that matches the shape the frontend will consume later. Keep routes versioned under `/api/v1`.
 
 **Step 5: Verify backend build**
 
@@ -166,7 +170,7 @@ Expected: success with `0 errors`
 **Files:**
 - Reference legacy: `sidefunc/web_general.php`
 - Modify: `apps/api/Endpoints/ConfigEndpoints.cs`
-- Modify: `apps/web/src/services/config/index.service.ts`
+- Modify: `apps/web/src/pages/Home/index.service.ts`
 - Modify: `apps/web/src/pages/Home/index.tsx`
 
 **Step 1: Inspect legacy behavior**
@@ -195,41 +199,9 @@ Run:
 
 Expected: all pass
 
-### Task 6: Migrate the second public read-only slice: rankings
+### Task 6: Rankings migration deferred
 
-**Files:**
-- Reference legacy: `sidefunc/rank_info.php`
-- Modify: `apps/api/Endpoints/RankingsEndpoints.cs`
-- Modify: `apps/web/src/services/rankings/index.service.ts`
-- Create: `apps/web/src/components/RankingList/index.tsx`
-- Create: `apps/web/src/components/RankingList/index.module.scss`
-- Modify: `apps/web/src/pages/Home/index.tsx`
-
-**Step 1: Inspect legacy ranking behavior**
-
-Document query params, response fields, pagination, and any legacy quirks from `sidefunc/rank_info.php`.
-
-**Step 2: Write failing tests**
-
-Add a service test for the rankings client and a UI test for rendering a basic ranking list.
-
-**Step 3: Implement the minimal backend endpoint**
-
-Return a stable response contract that supports page number and optional filters.
-
-**Step 4: Implement the frontend list**
-
-Render rankings on the Home page using a dedicated reusable component under `components/`.
-
-**Step 5: Verify green**
-
-Run:
-- `cd apps/web && npm run test`
-- `cd apps/web && npm run lint`
-- `cd apps/web && npm run build`
-- `dotnet build apps/api`
-
-Expected: all pass
+The legacy rankings flow under `sidefunc/rank_info.php` and the old jQuery-driven homepage block are intentionally out of scope for the current batch.
 
 ### Task 7: Prepare the authentication migration slice
 
@@ -275,8 +247,8 @@ git commit -m "refactor: align web app structure with project conventions"
 **Step 2: Commit API layer skeleton**
 
 ```bash
-git add apps/web/src/services
-git commit -m "feat: add frontend api service foundation"
+git add apps/web/src/pages/Home apps/web/src/app/http
+git commit -m "feat: add home page api service foundation"
 ```
 
 **Step 3: Commit backend endpoint organization**

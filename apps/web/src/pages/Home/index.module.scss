@@ -10,6 +10,10 @@
     linear-gradient(140deg, rgba(244, 106, 64, 0.2), rgba(18, 18, 26, 0)),
     linear-gradient(180deg, rgba(11, 16, 32, 0.88), rgba(11, 16, 32, 0.72));
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.28);
+
+  h1 {
+    max-width: 18ch;
+  }
 }
 
 .eyebrow {
@@ -71,6 +75,8 @@
 
 .trackList {
   list-style: none;
+  margin: 0;
+  padding: 0;
 
   li {
     padding: 14px 0;
@@ -82,6 +88,10 @@
 @media (max-width: 900px) {
   .hero {
     padding: 28px 24px;
+
+    h1 {
+      max-width: none;
+    }
   }
 
   .panels {

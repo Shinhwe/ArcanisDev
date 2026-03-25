@@ -1,6 +1,6 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom';
 
-import styles from './index.module.scss'
+import styles from './index.module.scss';
 
 const navigationItems = [
   {
@@ -12,12 +12,14 @@ const navigationItems = [
     to: '/playground',
     label: 'Playground',
   },
-]
+];
 
 export const AppShell = () => {
   const getNavLinkClassName = ({ isActive }: { isActive: boolean }) => {
-    return [styles.navLink, isActive ? styles.navLinkActive : ''].filter(Boolean).join(' ')
-  }
+    return [styles.navLink, isActive ? styles.navLinkActive : '']
+      .filter(Boolean)
+      .join(' ');
+  };
 
   return (
     <div className={styles.root}>
@@ -43,5 +45,5 @@ export const AppShell = () => {
         <Outlet />
       </main>
     </div>
-  )
-}
+  );
+};

@@ -1,8 +1,26 @@
-import { createBrowserRouter, createMemoryRouter, type RouteObject } from 'react-router-dom'
+import {
+  createBrowserRouter,
+  createMemoryRouter,
+  type RouteObject,
+} from 'react-router-dom';
 
-import { AppShell } from '../../components/AppShell'
-import { Home } from '../../pages/Home'
-import { Playground } from '../../pages/Playground'
+import { AppShell } from '../../components/AppShell';
+
+const loadHomeRoute = async () => {
+  return import('../../pages/Home').then((module) => {
+    return {
+      Component: module.default,
+    };
+  });
+};
+
+const loadPlaygroundRoute = async () => {
+  return import('../../pages/Playground').then((module) => {
+    return {
+      Component: module.default,
+    };
+  });
+};
 
 const routes: RouteObject[] = [
   {
@@ -11,20 +29,20 @@ const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <Home />,
+        lazy: loadHomeRoute,
       },
       {
         path: 'playground',
-        element: <Playground />,
+        lazy: loadPlaygroundRoute,
       },
     ],
   },
-]
+];
 
 export const createAppRouter = (initialEntries?: string[]) => {
   if (initialEntries) {
-    return createMemoryRouter(routes, { initialEntries })
+    return createMemoryRouter(routes, { initialEntries });
   }
 
-  return createBrowserRouter(routes)
-}
+  return createBrowserRouter(routes);
+};

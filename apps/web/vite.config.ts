@@ -7,6 +7,14 @@ export default defineConfig({
   build: {
     target: 'esnext',
   },
+  server: {
+    proxy: {
+      '/api/v1': {
+        changeOrigin: true,
+        target: 'http://localhost:5103',
+      },
+    },
+  },
   test: {
     environment: 'jsdom',
     globals: true,

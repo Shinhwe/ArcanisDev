@@ -1,21 +1,21 @@
-import styles from './index.module.scss'
+import styles from './index.module.scss';
 
 const tracks = [
   'Public read APIs',
   'Authentication',
   'User control panel',
   'Admin control panel',
-]
+];
 
-export const Home = () => {
+const Home = () => {
   return (
     <section className={styles.root}>
       <div className={styles.hero}>
         <p className={styles.eyebrow}>Workspace Ready</p>
         <h1>React front end. .NET 10 back end.</h1>
         <p className={styles.lede}>
-          The route layer is now in place, `rxjs` is available as a dependency, and this
-          frontend is ready for the next migration slices.
+          The route layer is now in place, `rxjs` is available as a dependency,
+          and this frontend is ready for the next migration slices.
         </p>
         <div className={styles.stack}>
           <span>React Router</span>
@@ -30,8 +30,8 @@ export const Home = () => {
         <article className={styles.panel}>
           <h2>API</h2>
           <p>
-            The ASP.NET Core service in <code>apps/api</code> remains the backend target for
-            the gradual migration.
+            The ASP.NET Core service in <code>apps/api</code> remains the
+            backend target for the gradual migration.
           </p>
         </article>
         <article className={styles.panel}>
@@ -44,5 +44,7 @@ export const Home = () => {
         </article>
       </div>
     </section>
-  )
-}
+  );
+};
+
+export default Home;

@@ -1,3 +1,5 @@
+Always respond in Chinese-simplified
+
 ## Code Guidelines
 Do not write code for legacy browser compatibility. You are encouraged to use the latest features provided by **modern browsers**, **React**, and the **ESNext** specification.
 
@@ -12,6 +14,8 @@ To ensure consistency, readability, and maintainability across the codebase, ple
 
 ### 1. Function Syntax
 Prefer **Arrow Functions** (`const task = () => {}`) over traditional function declarations (`function task() {}`). This promotes a consistent style and keeps function patterns aligned across utilities, hooks, components, and event handlers.
+
+If a function is asynchronous, it must be explicitly declared with the `async` keyword, even when the implementation uses Promise chaining instead of `await`. Using `async` without `await` is allowed, but avoid `await` unless a project-specific rule explicitly requires it.
 
 ### 2. Naming Conventions
 Variable and function names must be **descriptive and self-explanatory**. A developer should be able to understand the purpose of a variable or the action of a function simply by reading its name. Avoid vague abbreviations.
@@ -194,7 +198,7 @@ When interacting with `localStorage` or `sessionStorage`, you must **strictly us
 All API service functions in `service.ts` files must adhere to a **structured, Promise-based pattern** to ensure consistency, readability, and proper error propagation across the codebase.
 
 #### Core Principles
-- **Explicit Promise Chaining**: Always use explicit `.then()` chains. The use of `async/await` syntax is **strictly prohibited** in service functions.
+- **Explicit Promise Chaining**: Always use explicit `.then()` chains. Service functions may be declared with `async`, but the use of `await` syntax is **strictly prohibited**.
 - **Mandatory Promise Return**: Every service function must return a `Promise`. Use `Promise.resolve()` for successful outcomes and `Promise.reject()` for failures.
 - **Structured Function Body**: Service functions must follow a three-part structure: URL definition, parameter definition (if applicable), and the HTTP request with standardized response handling.
 

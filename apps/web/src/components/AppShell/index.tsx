@@ -30,6 +30,10 @@ const navigationItems = [
     to: '/downloads',
   },
   {
+    label: 'Vote',
+    to: '/vote',
+  },
+  {
     label: 'Patch Notes',
     to: '/patch',
   },

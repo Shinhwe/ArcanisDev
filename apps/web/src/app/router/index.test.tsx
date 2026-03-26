@@ -50,6 +50,9 @@ describe('createAppRouter', () => {
     const downloadsRoute = rootRoute.children?.find((route) => {
       return route.path === 'downloads'
     })
+    const voteRoute = rootRoute.children?.find((route) => {
+      return route.path === 'vote'
+    })
     const patchRoute = rootRoute.children?.find((route) => {
       return route.path === 'patch'
     })
@@ -70,6 +73,8 @@ describe('createAppRouter', () => {
     expect(homeRoute?.element).toBeUndefined()
     expect(downloadsRoute?.lazy).toEqual(expect.any(Function))
     expect(downloadsRoute?.element).toBeUndefined()
+    expect(voteRoute?.lazy).toEqual(expect.any(Function))
+    expect(voteRoute?.element).toBeUndefined()
     expect(patchRoute?.lazy).toEqual(expect.any(Function))
     expect(patchRoute?.element).toBeUndefined()
     expect(loginRoute?.lazy).toEqual(expect.any(Function))
@@ -125,6 +130,17 @@ describe('createAppRouter', () => {
     ).toBeInTheDocument()
   })
 
+  it('renders the vote page at /vote', async () => {
+    render(<RouterProvider router={createAppRouter(['/vote'])} />)
+
+    expect(
+      await screen.findByRole('heading', {
+        name: /vote for awaken/i,
+        level: 1,
+      }),
+    ).toBeInTheDocument()
+  })
+
   it('renders the patch page at /patch', async () => {
     render(<RouterProvider router={createAppRouter(['/patch'])} />)
 
@@ -134,5 +150,4 @@ describe('createAppRouter', () => {
       }),
     ).toBeInTheDocument()
   })
-
 })

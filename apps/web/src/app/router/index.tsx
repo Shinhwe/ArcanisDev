@@ -22,6 +22,14 @@ const loadDownloadsRoute = async () => {
   });
 };
 
+const loadVoteRoute = async () => {
+  return import('../../pages/Vote').then((module) => {
+    return {
+      Component: module.default,
+    };
+  });
+};
+
 const loadPatchRoute = async () => {
   return import('../../pages/Patch').then((module) => {
     return {
@@ -74,6 +82,10 @@ const routes: RouteObject[] = [
       {
         path: 'downloads',
         lazy: loadDownloadsRoute,
+      },
+      {
+        path: 'vote',
+        lazy: loadVoteRoute,
       },
       {
         path: 'patch',

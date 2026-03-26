@@ -10,11 +10,14 @@ public sealed class AuthApiFactory : WebApplicationFactory<Program>
     public AuthApiFactory(string nextToken)
     {
         AuthRepository = new InMemoryAuthRepository();
+        DownloadRepository = new InMemoryDownloadRepository();
         UserProfileRepository = new InMemoryUserProfileRepository();
         authTokenFactory = new FakeAuthTokenFactory(nextToken);
     }
 
     public InMemoryAuthRepository AuthRepository { get; }
+
+    public InMemoryDownloadRepository DownloadRepository { get; }
 
     public InMemoryUserProfileRepository UserProfileRepository { get; }
 
@@ -25,12 +28,15 @@ public sealed class AuthApiFactory : WebApplicationFactory<Program>
         {
             serviceCollection.RemoveAll<IAuthRepository>();
             serviceCollection.RemoveAll<IAuthTokenFactory>();
+            serviceCollection.RemoveAll<IDownloadRepository>();
             serviceCollection.RemoveAll<IUserProfileRepository>();
             serviceCollection.RemoveAll<AuthService>();
 
             serviceCollection.AddSingleton(AuthRepository);
+            serviceCollection.AddSingleton(DownloadRepository);
             serviceCollection.AddSingleton(UserProfileRepository);
             serviceCollection.AddSingleton<IAuthRepository>(AuthRepository);
+            serviceCollection.AddSingleton<IDownloadRepository>(DownloadRepository);
             serviceCollection.AddSingleton<IUserProfileRepository>(UserProfileRepository);
             serviceCollection.AddSingleton<IAuthTokenFactory>(authTokenFactory);
             serviceCollection.AddScoped<AuthService>();

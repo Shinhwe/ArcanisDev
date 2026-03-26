@@ -25,6 +25,10 @@ const navigationItems = [
     label: 'Home',
     to: '/',
   },
+  {
+    label: 'Downloads',
+    to: '/downloads',
+  },
 ]
 
 export const AppShell = () => {

@@ -14,6 +14,14 @@ const loadHomeRoute = async () => {
   });
 };
 
+const loadDownloadsRoute = async () => {
+  return import('../../pages/Downloads').then((module) => {
+    return {
+      Component: module.default,
+    };
+  });
+};
+
 const loadPlaygroundRoute = async () => {
   return import('../../pages/Playground').then((module) => {
     return {
@@ -54,6 +62,10 @@ const routes: RouteObject[] = [
       {
         index: true,
         lazy: loadHomeRoute,
+      },
+      {
+        path: 'downloads',
+        lazy: loadDownloadsRoute,
       },
       {
         path: 'login',

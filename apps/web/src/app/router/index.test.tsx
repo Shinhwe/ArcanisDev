@@ -44,14 +44,29 @@ describe('createAppRouter', () => {
   it('configures page routes for lazy loading', () => {
     const router = createAppRouter(['/'])
     const rootRoute = router.routes[0]
-    const homeRoute = rootRoute.children?.[0]
-    const loginRoute = rootRoute.children?.[1]
-    const registerRoute = rootRoute.children?.[2]
-    const userControlPanelRoute = rootRoute.children?.[3]
-    const playgroundRoute = rootRoute.children?.[4]
+    const homeRoute = rootRoute.children?.find((route) => {
+      return route.index === true
+    })
+    const downloadsRoute = rootRoute.children?.find((route) => {
+      return route.path === 'downloads'
+    })
+    const loginRoute = rootRoute.children?.find((route) => {
+      return route.path === 'login'
+    })
+    const registerRoute = rootRoute.children?.find((route) => {
+      return route.path === 'register'
+    })
+    const userControlPanelRoute = rootRoute.children?.find((route) => {
+      return route.path === 'user-cp'
+    })
+    const playgroundRoute = rootRoute.children?.find((route) => {
+      return route.path === 'playground'
+    })
 
     expect(homeRoute?.lazy).toEqual(expect.any(Function))
     expect(homeRoute?.element).toBeUndefined()
+    expect(downloadsRoute?.lazy).toEqual(expect.any(Function))
+    expect(downloadsRoute?.element).toBeUndefined()
     expect(loginRoute?.lazy).toEqual(expect.any(Function))
     expect(loginRoute?.element).toBeUndefined()
     expect(registerRoute?.lazy).toEqual(expect.any(Function))
@@ -91,6 +106,16 @@ describe('createAppRouter', () => {
     expect(
       await screen.findByRole('heading', {
         name: /register to awaken/i,
+      }),
+    ).toBeInTheDocument()
+  })
+
+  it('renders the downloads page at /downloads', async () => {
+    render(<RouterProvider router={createAppRouter(['/downloads'])} />)
+
+    expect(
+      await screen.findByRole('heading', {
+        name: /awaken client download/i,
       }),
     ).toBeInTheDocument()
   })

@@ -13,8 +13,7 @@ public sealed class CmsAuthMiddlewareTests
                 didInvokeNext = true;
 
                 return Task.CompletedTask;
-            },
-            authRepository);
+            });
         var httpContext = new DefaultHttpContext();
 
         httpContext.SetEndpoint(new Endpoint(
@@ -22,7 +21,7 @@ public sealed class CmsAuthMiddlewareTests
             metadata: new EndpointMetadataCollection(),
             displayName: "PublicEndpoint"));
 
-        await middleware.InvokeAsync(httpContext);
+        await middleware.InvokeAsync(httpContext, authRepository);
 
         Assert.True(didInvokeNext);
         Assert.Equal(StatusCodes.Status200OK, httpContext.Response.StatusCode);
@@ -39,8 +38,7 @@ public sealed class CmsAuthMiddlewareTests
                 didInvokeNext = true;
 
                 return Task.CompletedTask;
-            },
-            authRepository);
+            });
         var httpContext = new DefaultHttpContext();
 
         httpContext.SetEndpoint(new Endpoint(
@@ -48,7 +46,7 @@ public sealed class CmsAuthMiddlewareTests
             metadata: new EndpointMetadataCollection(new RequireCmsAuthAttribute()),
             displayName: "ProtectedEndpoint"));
 
-        await middleware.InvokeAsync(httpContext);
+        await middleware.InvokeAsync(httpContext, authRepository);
 
         Assert.False(didInvokeNext);
         Assert.Equal(StatusCodes.Status401Unauthorized, httpContext.Response.StatusCode);
@@ -76,8 +74,7 @@ public sealed class CmsAuthMiddlewareTests
                 Assert.Equal("alpha", httpContext.GetCmsAuthContext()!.Username);
 
                 return Task.CompletedTask;
-            },
-            authRepository);
+            });
         var httpContext = new DefaultHttpContext();
 
         httpContext.Request.Headers.Authorization = "Bearer token-protected";
@@ -86,7 +83,7 @@ public sealed class CmsAuthMiddlewareTests
             metadata: new EndpointMetadataCollection(new RequireCmsAuthAttribute()),
             displayName: "ProtectedEndpoint"));
 
-        await middleware.InvokeAsync(httpContext);
+        await middleware.InvokeAsync(httpContext, authRepository);
 
         Assert.True(didInvokeNext);
         Assert.Equal(StatusCodes.Status200OK, httpContext.Response.StatusCode);

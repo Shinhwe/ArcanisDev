@@ -4,26 +4,21 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 public sealed class CmsAuthMiddleware
 {
-    private readonly IAuthRepository authRepository;
     private readonly ILogger<CmsAuthMiddleware> logger;
     private readonly RequestDelegate next;
 
-    public CmsAuthMiddleware(RequestDelegate next, IAuthRepository authRepository)
-        : this(next, authRepository, NullLogger<CmsAuthMiddleware>.Instance)
+    public CmsAuthMiddleware(RequestDelegate next)
+        : this(next, NullLogger<CmsAuthMiddleware>.Instance)
     {
     }
 
-    public CmsAuthMiddleware(
-        RequestDelegate next,
-        IAuthRepository authRepository,
-        ILogger<CmsAuthMiddleware> logger)
+    public CmsAuthMiddleware(RequestDelegate next, ILogger<CmsAuthMiddleware> logger)
     {
         this.next = next;
-        this.authRepository = authRepository;
         this.logger = logger;
     }
 
-    public async Task InvokeAsync(HttpContext httpContext)
+    public async Task InvokeAsync(HttpContext httpContext, IAuthRepository authRepository)
     {
         var bearerToken = GetBearerToken(httpContext.Request.Headers.Authorization.ToString());
 

@@ -157,4 +157,16 @@ describe('Register page', () => {
       expect(navigateMock).not.toHaveBeenCalled()
     })
   })
+
+  it('renders the shadow image as a page-level bottom layer instead of inside the content container', () => {
+    render(
+      <MemoryRouter>
+        <Register />
+      </MemoryRouter>,
+    )
+
+    const registerShadowImageElement = screen.getByTestId('register-shadow-image')
+
+    expect(registerShadowImageElement.parentElement?.tagName).toBe('SECTION')
+  })
 })

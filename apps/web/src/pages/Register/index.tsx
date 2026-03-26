@@ -200,11 +200,15 @@ const Register = () => {
             </div>
           </div>
         </div>
-
-        <div className={styles.shadow}>
-          <img alt="" aria-hidden="true" src={awakenShadowImage} />
-        </div>
       </div>
+
+      <img
+        alt=""
+        aria-hidden="true"
+        className={styles.shadowImage}
+        data-testid="register-shadow-image"
+        src={awakenShadowImage}
+      />
     </section>
   )
 }

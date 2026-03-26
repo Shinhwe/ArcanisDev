@@ -106,4 +106,16 @@ describe('Login page', () => {
       expect(navigateMock).toHaveBeenCalledWith('/')
     })
   })
+
+  it('renders the shadow image as a page-level bottom layer instead of inside the content container', () => {
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>,
+    )
+
+    const loginShadowImageElement = screen.getByTestId('login-shadow-image')
+
+    expect(loginShadowImageElement.parentElement?.tagName).toBe('SECTION')
+  })
 })

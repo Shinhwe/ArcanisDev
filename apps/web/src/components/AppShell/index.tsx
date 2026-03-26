@@ -29,6 +29,10 @@ const navigationItems = [
     label: 'Downloads',
     to: '/downloads',
   },
+  {
+    label: 'Patch Notes',
+    to: '/patch',
+  },
 ]
 
 export const AppShell = () => {

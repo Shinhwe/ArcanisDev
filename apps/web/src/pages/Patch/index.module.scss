@@ -1,0 +1,197 @@
+.root {
+  position: relative;
+  height: calc(100vh - 81px);
+  padding: 24px 20px 48px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  width: 80vw;
+  height: 100%;
+  min-width: 1600px;
+  margin: 0 auto;
+}
+
+.panel {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid #44617a;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(7, 30, 51, 0.96) 0%, rgba(10, 51, 86, 0.92) 100%);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.32);
+}
+
+.header {
+  padding: 32px 36px 0;
+  text-align: center;
+
+  h1 {
+    margin: 0;
+    color: #ffc800;
+    font-size: clamp(2rem, 3vw, 3.25rem);
+  }
+
+  p {
+    margin: 12px 0 0;
+    color: rgba(255, 255, 255, 0.84);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+}
+
+.scrollViewport {
+  min-height: 0;
+  padding: 28px 36px 36px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+
+.content {
+  display: flex;
+  align-items: stretch;
+  gap: 1.5rem;
+  min-height: 100%;
+}
+
+.categoryColumn {
+  width: 360px;
+  flex: 0 0 auto;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  z-index: 1;
+}
+
+.mainColumn,
+.postsPanel {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mainColumn {
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+}
+
+.sectionHeader {
+  margin-bottom: 1rem;
+
+  h2 {
+    margin: 0 0 0.35rem;
+    color: #f6fbff;
+    font-size: 1.25rem;
+  }
+
+  p {
+    margin: 0;
+    color: rgba(233, 237, 245, 0.7);
+    font-size: 0.95rem;
+  }
+}
+
+.categoryList,
+.postList {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.categoryButton,
+.postButton,
+.retryButton {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.04);
+  color: #f6fbff;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    background-color 0.2s ease;
+
+  &:hover {
+    border-color: rgba(166, 209, 255, 0.46);
+    background-color: rgba(166, 209, 255, 0.1);
+    transform: translateY(-1px);
+  }
+}
+
+.categoryButton {
+  padding: 0.8rem 1rem;
+  text-align: left;
+}
+
+.categoryButtonActive {
+  border-color: rgba(166, 209, 255, 0.58);
+  background-color: rgba(166, 209, 255, 0.14);
+}
+
+.postButtonActive {
+  border-color: rgba(166, 209, 255, 0.58);
+  background-color: rgba(166, 209, 255, 0.14);
+}
+
+.postButton {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  text-align: left;
+
+  span {
+    font-weight: 600;
+  }
+
+  time {
+    color: rgba(233, 237, 245, 0.66);
+    white-space: nowrap;
+  }
+}
+
+.bottomProbe {
+  width: 100%;
+  height: 1px;
+  margin-top: 1rem;
+  opacity: 0;
+}
+
+.statusMessage {
+  margin: 0.75rem 0 0;
+  color: rgba(233, 237, 245, 0.78);
+}
+
+.loadMoreErrorCard {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 162, 162, 0.28);
+  border-radius: 1rem;
+  background-color: rgba(255, 162, 162, 0.08);
+
+  p {
+    margin: 0 0 0.75rem;
+    color: #ffd8d8;
+  }
+}
+
+.retryButton {
+  padding: 0.75rem 1rem;
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+.shadowImage {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+}

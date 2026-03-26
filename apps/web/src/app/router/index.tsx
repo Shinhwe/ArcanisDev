@@ -22,6 +22,14 @@ const loadDownloadsRoute = async () => {
   });
 };
 
+const loadPatchRoute = async () => {
+  return import('../../pages/Patch').then((module) => {
+    return {
+      Component: module.default,
+    };
+  });
+};
+
 const loadPlaygroundRoute = async () => {
   return import('../../pages/Playground').then((module) => {
     return {
@@ -66,6 +74,10 @@ const routes: RouteObject[] = [
       {
         path: 'downloads',
         lazy: loadDownloadsRoute,
+      },
+      {
+        path: 'patch',
+        lazy: loadPatchRoute,
       },
       {
         path: 'login',

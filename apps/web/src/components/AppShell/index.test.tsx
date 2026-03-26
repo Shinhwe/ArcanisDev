@@ -71,6 +71,7 @@ describe('AppShell', () => {
     expect(screen.getByRole('button', { name: /open navigation/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /downloads/i })).toHaveAttribute('href', '/downloads')
+    expect(screen.getByRole('link', { name: /patch notes/i })).toHaveAttribute('href', '/patch')
     expect(screen.getByRole('link', { name: /login/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /register/i })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /playground/i })).not.toBeInTheDocument()

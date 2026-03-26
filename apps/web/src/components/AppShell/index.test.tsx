@@ -75,7 +75,7 @@ describe('AppShell', () => {
     expect(screen.queryByRole('link', { name: /playground/i })).not.toBeInTheDocument()
   })
 
-  it('shows the current username and supports logout for authenticated users', async () => {
+  it('shows the current username, user cp entry, and supports logout for authenticated users', async () => {
     await setAuthSession({
       token: 'token-authenticated',
       user: {
@@ -96,6 +96,7 @@ describe('AppShell', () => {
     const currentUserBadges = await screen.findAllByText('alpha')
 
     expect(currentUserBadges[0]).toBeInTheDocument()
+    expect(screen.getAllByRole('link', { name: /user cp/i })[0]).toHaveAttribute('href', '/user-cp')
     expect(screen.getByRole('button', { name: /logout/i })).toBeInTheDocument()
 
     await act(async () => {

@@ -47,7 +47,8 @@ describe('createAppRouter', () => {
     const homeRoute = rootRoute.children?.[0]
     const loginRoute = rootRoute.children?.[1]
     const registerRoute = rootRoute.children?.[2]
-    const playgroundRoute = rootRoute.children?.[3]
+    const userControlPanelRoute = rootRoute.children?.[3]
+    const playgroundRoute = rootRoute.children?.[4]
 
     expect(homeRoute?.lazy).toEqual(expect.any(Function))
     expect(homeRoute?.element).toBeUndefined()
@@ -55,6 +56,9 @@ describe('createAppRouter', () => {
     expect(loginRoute?.element).toBeUndefined()
     expect(registerRoute?.lazy).toEqual(expect.any(Function))
     expect(registerRoute?.element).toBeUndefined()
+    expect(userControlPanelRoute?.path).toBe('user-cp')
+    expect(userControlPanelRoute?.lazy).toEqual(expect.any(Function))
+    expect(userControlPanelRoute?.element).toBeUndefined()
     expect(playgroundRoute?.lazy).toEqual(expect.any(Function))
     expect(playgroundRoute?.element).toBeUndefined()
   })
@@ -90,4 +94,5 @@ describe('createAppRouter', () => {
       }),
     ).toBeInTheDocument()
   })
+
 })

@@ -38,6 +38,14 @@ const loadRegisterRoute = async () => {
   });
 };
 
+const loadUserControlPanelRoute = async () => {
+  return import('../../pages/UserControlPanel').then((module) => {
+    return {
+      Component: module.default,
+    };
+  });
+};
+
 const routes: RouteObject[] = [
   {
     path: '/',
@@ -54,6 +62,10 @@ const routes: RouteObject[] = [
       {
         path: 'register',
         lazy: loadRegisterRoute,
+      },
+      {
+        path: 'user-cp',
+        lazy: loadUserControlPanelRoute,
       },
       {
         path: 'playground',

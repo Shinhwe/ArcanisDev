@@ -10,6 +10,7 @@ builder.Services.Configure<DatabaseOptions>(
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<LegacyCmsConnectionFactory>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddSingleton<IAuthTokenFactory, AuthTokenFactory>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddCors(options =>
@@ -43,6 +44,7 @@ app.UseMiddleware<CmsAuthMiddleware>();
 app.MapHealthEndpoints();
 app.MapConfigEndpoints();
 app.MapAuthEndpoints();
+app.MapUserProfileEndpoints();
 
 app.Run();
 

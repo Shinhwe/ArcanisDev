@@ -10,10 +10,13 @@ public sealed class AuthApiFactory : WebApplicationFactory<Program>
     public AuthApiFactory(string nextToken)
     {
         AuthRepository = new InMemoryAuthRepository();
+        UserProfileRepository = new InMemoryUserProfileRepository();
         authTokenFactory = new FakeAuthTokenFactory(nextToken);
     }
 
     public InMemoryAuthRepository AuthRepository { get; }
+
+    public InMemoryUserProfileRepository UserProfileRepository { get; }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -22,10 +25,13 @@ public sealed class AuthApiFactory : WebApplicationFactory<Program>
         {
             serviceCollection.RemoveAll<IAuthRepository>();
             serviceCollection.RemoveAll<IAuthTokenFactory>();
+            serviceCollection.RemoveAll<IUserProfileRepository>();
             serviceCollection.RemoveAll<AuthService>();
 
             serviceCollection.AddSingleton(AuthRepository);
+            serviceCollection.AddSingleton(UserProfileRepository);
             serviceCollection.AddSingleton<IAuthRepository>(AuthRepository);
+            serviceCollection.AddSingleton<IUserProfileRepository>(UserProfileRepository);
             serviceCollection.AddSingleton<IAuthTokenFactory>(authTokenFactory);
             serviceCollection.AddScoped<AuthService>();
         });

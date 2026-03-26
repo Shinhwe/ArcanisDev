@@ -171,6 +171,9 @@ export const AppShell = () => {
                 )}
                 {!!currentAuthUser === true && (
                   <>
+                    <Link className={styles.textAction} to="/user-cp">
+                      User CP
+                    </Link>
                     <span className={styles.userBadge}>{currentAuthUser.username}</span>
                     <button
                       className={styles.themeAction}
@@ -269,6 +272,9 @@ export const AppShell = () => {
           )}
           {!!currentAuthUser === true && (
             <>
+              <Link className={styles.textAction} onClick={handleCloseNavigationMenu} to="/user-cp">
+                User CP
+              </Link>
               <span className={styles.userBadge}>{currentAuthUser.username}</span>
               <button
                 className={styles.themeAction}

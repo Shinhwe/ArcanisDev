@@ -1,81 +1,242 @@
 .root {
-  display: grid;
-  place-items: center;
-  min-height: calc(100vh - 220px);
+  --page-accent: #3875c5;
+  --page-link-color: #007bff;
+  --page-link-hover-color: #0056b3;
+  --page-button-color: #007bff;
+  --page-button-hover-color: #0056b3;
+  --page-focus-shadow: rgba(0, 123, 255, 0.5);
+
+  position: relative;
+  padding: 45px 15px 0;
 }
 
-.card {
-  width: min(100%, 540px);
-  padding: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background:
-    linear-gradient(180deg, rgba(10, 14, 25, 0.94), rgba(10, 14, 25, 0.82)),
-    linear-gradient(135deg, rgba(241, 164, 107, 0.16), rgba(255, 255, 255, 0));
-  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.24);
+.container {
+  position: relative;
+  z-index: 2;
+  max-width: 1420px;
+  margin: 0 auto;
 }
 
-.eyebrow,
-.lede,
-.meta,
-.errorMessage {
+.panel {
+  overflow: hidden;
+  background-color: #f8f8f8;
+  border-top-left-radius: 100px;
+  border-top-right-radius: 100px;
+  box-shadow: 0 0 20px rgba(11, 11, 11, 0.78);
+}
+
+.panelHeading {
+  border-bottom: 1px solid #eaeaea;
+  text-align: center;
+}
+
+.panelHeading h1 {
   margin: 0;
+  padding: 30px 0;
+  color: #1b1b21;
+  font-size: 40px;
 }
 
-.eyebrow {
-  font-size: 0.76rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #f1a46b;
+.panelBody {
+  display: grid;
+  grid-template-columns: minmax(280px, 35%) 1fr;
 }
 
-.lede {
-  margin-top: 14px;
-  color: rgba(244, 238, 227, 0.72);
+.formColumn {
+  border-left: 1px solid #e4e4e4;
+}
+
+.copyBlock {
+  margin: 0 30px;
+  padding: 26px 0 40px;
+}
+
+.copyBlock h2 {
+  position: relative;
+  margin: 0 0 20px;
+  padding: 20px 0;
+  color: var(--page-accent);
+  font-size: 30px;
+}
+
+.copyBlock h2::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background-color: #ff0000;
+}
+
+.copyBlock p {
+  color: #545051;
+  font-size: 18px;
   line-height: 1.7;
+}
+
+.copyBlock p + p {
+  margin-top: 16px;
+}
+
+.copyBlock a {
+  color: var(--page-link-color);
+  transition: color 180ms ease;
+}
+
+.copyBlock a:hover {
+  color: var(--page-link-hover-color);
+}
+
+.tipList {
+  margin-top: 18px;
+  padding-left: 22px;
+  list-style: disc;
+}
+
+.tipList li {
+  margin-bottom: 10px;
+  color: #545051;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.noteText {
+  color: #666;
+  font-style: italic;
 }
 
 .form {
   display: grid;
-  gap: 16px;
-  margin-top: 28px;
-
-  button {
-    min-height: 48px;
-    border: 1px solid rgba(241, 164, 107, 0.45);
-    background-color: rgba(241, 164, 107, 0.14);
-    color: #f7c6a2;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-  }
+  gap: 18px;
 }
 
 .field {
   display: grid;
   gap: 8px;
+}
 
-  span {
-    color: rgba(244, 238, 227, 0.82);
-    font-size: 0.92rem;
-  }
+.fieldLabel {
+  color: #1b1b21;
+  font-size: 16px;
+  font-weight: 600;
+}
 
-  input {
-    min-height: 48px;
-    padding: 0 14px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background-color: rgba(255, 255, 255, 0.04);
-    color: #f4eee3;
-  }
+.field input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #1b1b21;
+  font-size: 16px;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--page-link-color);
+  box-shadow: 0 0 10px var(--page-focus-shadow);
+}
+
+.submitButton {
+  width: 100%;
+  padding: 12px 20px;
+  border: 1px solid var(--page-button-color);
+  border-radius: 8px;
+  background-color: var(--page-button-color);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  border-color: var(--page-button-hover-color);
+  background-color: var(--page-button-hover-color);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+.submitButton:disabled {
+  cursor: wait;
+  opacity: 0.72;
 }
 
 .errorMessage {
-  color: #ff9f8f;
+  padding: 12px 14px;
+  border: 1px solid #f1aeb5;
+  border-radius: 8px;
+  background-color: #f8d7da;
+  color: #842029;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
-.meta {
+.formFooter {
   margin-top: 18px;
-  color: rgba(244, 238, 227, 0.72);
+  color: #545051;
+  font-size: 16px;
+  text-align: center;
+}
 
-  a {
-    color: #f7c6a2;
+.shadow {
+  position: relative;
+  z-index: 1;
+  margin-top: -2px;
+}
+
+.shadow img {
+  display: block;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .panelHeading h1 {
+    padding: 20px 0;
+    font-size: 32px;
+  }
+
+  .copyBlock {
+    margin: 0 20px;
+  }
+
+  .copyBlock h2 {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 991px) {
+  .panelBody {
+    grid-template-columns: 1fr;
+  }
+
+  .formColumn {
+    border-top: 1px solid #e4e4e4;
+    border-left: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .root {
+    padding-top: 30px;
+  }
+
+  .panelHeading h1 {
+    padding: 20px 40px;
+    font-size: 25px;
+  }
+
+  .copyBlock h2 {
+    font-size: 20px;
+  }
+
+  .copyBlock p,
+  .tipList li {
+    font-size: 16px;
   }
 }

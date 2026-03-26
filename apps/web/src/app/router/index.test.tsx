@@ -64,7 +64,7 @@ describe('createAppRouter', () => {
 
     expect(
       await screen.findByRole('heading', {
-        name: /cms migration workspace/i,
+        name: /welcome to awaken/i,
       }),
     ).toBeInTheDocument()
   })
@@ -78,12 +78,16 @@ describe('createAppRouter', () => {
   it('renders the login page at /login', async () => {
     render(<RouterProvider router={createAppRouter(['/login'])} />)
 
-    expect(await screen.findByRole('heading', { name: /sign in/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /login to awaken/i })).toBeInTheDocument()
   })
 
   it('renders the register page at /register', async () => {
     render(<RouterProvider router={createAppRouter(['/register'])} />)
 
-    expect(await screen.findByRole('heading', { name: /create account/i })).toBeInTheDocument()
+    expect(
+      await screen.findByRole('heading', {
+        name: /register to awaken/i,
+      }),
+    ).toBeInTheDocument()
   })
 })

@@ -77,13 +77,16 @@ describe('Login page', () => {
       </MemoryRouter>,
     )
 
+    expect(screen.getByRole('heading', { name: /login to awaken/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /welcome back to awaken/i })).toBeInTheDocument()
+
     fireEvent.change(screen.getByLabelText(/username/i), {
       target: { value: 'alpha' },
     })
     fireEvent.change(screen.getByLabelText(/^password$/i), {
       target: { value: 'secret-password' },
     })
-    fireEvent.submit(screen.getByRole('button', { name: /sign in/i }).closest('form')!)
+    fireEvent.submit(screen.getByRole('button', { name: /^login$/i }).closest('form')!)
 
     await waitFor(() => {
       expect(createPasswordHashMock).toHaveBeenCalledWith('secret-password')

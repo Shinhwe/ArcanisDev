@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { setAuthSession } from '../../app/auth'
 import { createPasswordHash } from '../../app/auth/createPasswordHash'
 import { HttpClientError } from '../../app/http/HttpClientError'
+import awakenShadowImage from '../../assets/legacy/images/awaken-shadow.png'
 import { registerAuthUser } from './index.service'
 import styles from './index.module.scss'
 
@@ -82,33 +83,91 @@ const Register = () => {
 
   return (
     <section className={styles.root}>
-      <div className={styles.card}>
-        <p className={styles.eyebrow}>Auth Slice</p>
-        <h1>Create account</h1>
-        <p className={styles.lede}>
-          New accounts now start directly on the migrated auth tables and token flow.
-        </p>
-        <form className={styles.form} onSubmit={handleSubmitRegisterForm}>
-          <label className={styles.field}>
-            <span>Username</span>
-            <input name="username" onChange={handleChangeUsernameValue} type="text" value={usernameValue} />
-          </label>
-          <label className={styles.field}>
-            <span>Email</span>
-            <input name="email" onChange={handleChangeEmailValue} type="email" value={emailValue} />
-          </label>
-          <label className={styles.field}>
-            <span>Password</span>
-            <input name="password" onChange={handleChangePasswordValue} type="password" value={passwordValue} />
-          </label>
-          {registerErrorMessage.length > 0 && <p className={styles.errorMessage}>{registerErrorMessage}</p>}
-          <button disabled={isRegisterSubmitting} type="submit">
-            {isRegisterSubmitting ? 'Creating account...' : 'Create account'}
-          </button>
-        </form>
-        <p className={styles.meta}>
-          Already registered? <Link to="/login">Sign in</Link>
-        </p>
+      <div className={styles.container}>
+        <div className={styles.panel}>
+          <div className={styles.panelHeading}>
+            <h1>Register to Awaken</h1>
+          </div>
+
+          <div className={styles.panelBody}>
+            <div className={styles.copyColumn}>
+              <div className={styles.copyBlock}>
+                <h2>Welcome to Awaken</h2>
+                <p>
+                  Join the adventure today! Create your account and step into the
+                  world of Awaken. Explore unique content, meet new friends, and
+                  make unforgettable memories.
+                </p>
+                <p>
+                  <strong>Already have an account?</strong>{' '}
+                  <Link to="/login">Click here to log in</Link> and continue your journey.
+                </p>
+                <p className={styles.noteText}>
+                  New registrations now start directly on the migrated auth tables and token flow.
+                </p>
+              </div>
+            </div>
+
+            <div className={styles.formColumn}>
+              <div className={styles.copyBlock}>
+                <form className={styles.form} onSubmit={handleSubmitRegisterForm}>
+                  <label className={styles.field}>
+                    <span className={styles.fieldLabel}>Username</span>
+                    <input
+                      autoComplete="username"
+                      name="username"
+                      onChange={handleChangeUsernameValue}
+                      type="text"
+                      value={usernameValue}
+                    />
+                  </label>
+
+                  <label className={styles.field}>
+                    <span className={styles.fieldLabel}>Email</span>
+                    <input
+                      autoComplete="email"
+                      name="email"
+                      onChange={handleChangeEmailValue}
+                      type="email"
+                      value={emailValue}
+                    />
+                  </label>
+
+                  <label className={styles.field}>
+                    <span className={styles.fieldLabel}>Password</span>
+                    <input
+                      autoComplete="new-password"
+                      name="password"
+                      onChange={handleChangePasswordValue}
+                      type="password"
+                      value={passwordValue}
+                    />
+                  </label>
+
+                  {registerErrorMessage.length > 0 && (
+                    <p className={styles.errorMessage}>{registerErrorMessage}</p>
+                  )}
+
+                  <button
+                    className={styles.submitButton}
+                    disabled={isRegisterSubmitting}
+                    type="submit"
+                  >
+                    {isRegisterSubmitting === true ? 'Registering...' : 'Register'}
+                  </button>
+                </form>
+
+                <p className={styles.formFooter}>
+                  Already have an account? <Link to="/login">Log in</Link>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.shadow}>
+          <img alt="" aria-hidden="true" src={awakenShadowImage} />
+        </div>
       </div>
     </section>
   )

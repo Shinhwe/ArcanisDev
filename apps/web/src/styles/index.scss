@@ -1,11 +1,49 @@
-:root {
-  font-family: 'Space Grotesk', 'Avenir Next', 'Segoe UI', sans-serif;
-  line-height: 1.5;
+@font-face {
+  font-family: 'Gonzaga-Trial';
+  src: url('../assets/legacy/fonts/Gonzaga-Trial-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gonzaga-Trial';
+  src: url('../assets/legacy/fonts/Gonzaga-Trial-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gonzaga-Trial';
+  src: url('../assets/legacy/fonts/Gonzaga-Trial-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gonzaga-Trial';
+  src: url('../assets/legacy/fonts/Gonzaga-Trial-Regular.woff2') format('woff2');
   font-weight: 400;
-  color: #f4eee3;
-  background:
-    radial-gradient(circle at top, rgba(240, 114, 53, 0.24), transparent 36%),
-    linear-gradient(180deg, #17111b 0%, #090d16 54%, #06070b 100%);
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gonzaga-Trial';
+  src: url('../assets/legacy/fonts/Gonzaga-Trial-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  font-family: 'Gonzaga-Trial', 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 300;
+  color: #545051;
+  background-color: #051a2d;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -24,18 +62,7 @@ body,
 
 body {
   margin: 0;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 28px 28px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75), transparent 80%);
+  background-color: #051a2d;
 }
 
 button,
@@ -45,25 +72,51 @@ select {
   font: inherit;
 }
 
-code {
-  font-family: 'JetBrains Mono', 'SFMono-Regular', monospace;
-  padding: 0.18rem 0.42rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background-color: rgba(255, 255, 255, 0.06);
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 a {
   color: inherit;
+  text-decoration: none;
 }
 
 h1,
 h2,
+h3,
+h4,
+h5,
+h6,
 p,
 ul {
   margin-top: 0;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 15px;
+  color: #1b1b21;
+  font-family: 'Gonzaga-Trial', 'Segoe UI', sans-serif;
+}
+
+p,
 ul {
   margin-bottom: 0;
+}
+
+ul {
   padding-left: 0;
+  list-style: none;
+}
+
+code {
+  font-family: 'JetBrains Mono', 'SFMono-Regular', monospace;
+  padding: 0.18rem 0.42rem;
+  border: 1px solid rgba(5, 26, 45, 0.18);
+  background-color: rgba(255, 255, 255, 0.86);
 }

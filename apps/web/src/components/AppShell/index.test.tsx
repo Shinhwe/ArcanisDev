@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -67,6 +67,8 @@ describe('AppShell', () => {
       </MemoryRouter>,
     )
 
+    expect(screen.getByRole('link', { name: /awaken/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /open navigation/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /login/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /register/i })).toBeInTheDocument()
@@ -91,10 +93,14 @@ describe('AppShell', () => {
       </MemoryRouter>,
     )
 
-    expect(await screen.findByText('alpha')).toBeInTheDocument()
+    const currentUserBadges = await screen.findAllByText('alpha')
+
+    expect(currentUserBadges[0]).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /logout/i })).toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: /logout/i }))
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: /logout/i }))
+    })
 
     await waitFor(() => {
       expect(logoutCurrentAuthUserMock).toHaveBeenCalledTimes(1)

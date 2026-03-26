@@ -1,5 +1,6 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import Home from '.'
 
@@ -48,23 +49,36 @@ describe('Home page', () => {
     vi.unstubAllGlobals()
   })
 
-  it('renders the official discord link from the site config api', async () => {
+  it('renders the legacy hero/video slice from the site config api', async () => {
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue(
         createJsonResponse({
           discordLink: 'https://discord.gg/awaken',
-          youtubeLink: 'https://www.youtube.com/@awaken',
+          youtubeLink: 'https://www.youtube.com/watch?v=awaken123',
         }),
       ),
     )
 
-    render(<Home />)
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>,
+    )
 
     expect(
+      await screen.findByRole('heading', {
+        name: /welcome to awaken/i,
+      }),
+    ).toBeInTheDocument()
+    expect(
       await screen.findByRole('link', {
-        name: /official discord/i,
+        name: /join discord/i,
       }),
     ).toHaveAttribute('href', 'https://discord.gg/awaken')
+    expect(screen.getByTitle(/awaken trailer/i)).toHaveAttribute(
+      'src',
+      expect.stringContaining('https://www.youtube.com/embed/awaken123'),
+    )
   })
 })

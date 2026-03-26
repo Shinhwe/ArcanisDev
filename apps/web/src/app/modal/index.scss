@@ -1,0 +1,75 @@
+.arcanisSwalContainer {
+  z-index: 2400;
+}
+
+.arcanisSwalPopup {
+  border: 1px solid #e4e4e4;
+  border-radius: 28px;
+  box-shadow: 0 24px 48px rgba(11, 11, 11, 0.28);
+  font-family: 'Gonzaga-Trial', 'Segoe UI', sans-serif;
+  padding: 28px;
+}
+
+.arcanisSwalTitle {
+  color: #3875c5;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.arcanisSwalContent {
+  color: #545051;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.arcanisSwalConfirmButton,
+.arcanisSwalCancelButton {
+  min-width: 128px;
+  min-height: 46px;
+  border: 0;
+  border-radius: 999px;
+  font-family: 'Gonzaga-Trial', 'Segoe UI', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease;
+}
+
+.arcanisSwalConfirmButton {
+  background: linear-gradient(
+    to bottom,
+    #527881 0%,
+    #2d819f 38%,
+    #4a9fa3 75%,
+    #85b7ad 100%
+  );
+  box-shadow: 0 10px 24px rgba(45, 129, 159, 0.2);
+  color: #fff;
+}
+
+.arcanisSwalCancelButton {
+  background-color: #ececec;
+  color: #7e7e7e;
+}
+
+.arcanisSwalConfirmButton:hover,
+.arcanisSwalCancelButton:hover {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 767px) {
+  .arcanisSwalPopup {
+    border-radius: 24px;
+    padding: 24px 20px;
+  }
+
+  .arcanisSwalTitle {
+    font-size: 26px;
+  }
+
+  .arcanisSwalContent {
+    font-size: 16px;
+  }
+}

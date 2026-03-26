@@ -8,12 +8,14 @@ const {
   createPasswordHashMock,
   navigateMock,
   registerAuthUserMock,
+  showErrorModalMock,
   setAuthSessionMock,
 } = vi.hoisted(() => {
   return {
     createPasswordHashMock: vi.fn(),
     navigateMock: vi.fn(),
     registerAuthUserMock: vi.fn(),
+    showErrorModalMock: vi.fn(),
     setAuthSessionMock: vi.fn(),
   }
 })
@@ -45,11 +47,18 @@ vi.mock('./index.service', () => {
   }
 })
 
+vi.mock('../../app/modal', () => {
+  return {
+    showErrorModal: showErrorModalMock,
+  }
+})
+
 describe('Register page', () => {
   beforeEach(() => {
     navigateMock.mockReset()
     createPasswordHashMock.mockReset()
     registerAuthUserMock.mockReset()
+    showErrorModalMock.mockReset()
     setAuthSessionMock.mockReset()
   })
 
@@ -89,6 +98,9 @@ describe('Register page', () => {
     fireEvent.change(screen.getByLabelText(/^password$/i), {
       target: { value: 'secret-password' },
     })
+    fireEvent.change(screen.getByLabelText(/confirm password/i), {
+      target: { value: 'secret-password' },
+    })
     fireEvent.submit(screen.getByRole('button', { name: /^register$/i }).closest('form')!)
 
     await waitFor(() => {
@@ -108,6 +120,41 @@ describe('Register page', () => {
         },
       })
       expect(navigateMock).toHaveBeenCalledWith('/')
+    })
+  })
+
+  it('shows an error modal and blocks submission when confirm password does not match', async () => {
+    showErrorModalMock.mockResolvedValue(undefined)
+
+    render(
+      <MemoryRouter>
+        <Register />
+      </MemoryRouter>,
+    )
+
+    fireEvent.change(screen.getByLabelText(/username/i), {
+      target: { value: 'alpha' },
+    })
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: 'alpha@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText(/^password$/i), {
+      target: { value: 'secret-password' },
+    })
+    fireEvent.change(screen.getByLabelText(/confirm password/i), {
+      target: { value: 'different-password' },
+    })
+    fireEvent.submit(screen.getByRole('button', { name: /^register$/i }).closest('form')!)
+
+    await waitFor(() => {
+      expect(showErrorModalMock).toHaveBeenCalledWith({
+        text: 'Password and confirm password must match.',
+        title: 'Unable to register',
+      })
+      expect(createPasswordHashMock).not.toHaveBeenCalled()
+      expect(registerAuthUserMock).not.toHaveBeenCalled()
+      expect(setAuthSessionMock).not.toHaveBeenCalled()
+      expect(navigateMock).not.toHaveBeenCalled()
     })
   })
 })

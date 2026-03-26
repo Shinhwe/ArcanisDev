@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { setAuthSession } from '../../app/auth'
 import { createPasswordHash } from '../../app/auth/createPasswordHash'
 import { HttpClientError } from '../../app/http/HttpClientError'
+import { showErrorModal } from '../../app/modal'
 import awakenShadowImage from '../../assets/legacy/images/awaken-shadow.png'
 import { registerAuthUser } from './index.service'
 import styles from './index.module.scss'
@@ -27,6 +28,7 @@ const Register = () => {
   const [usernameValue, setUsernameValue] = useState('')
   const [emailValue, setEmailValue] = useState('')
   const [passwordValue, setPasswordValue] = useState('')
+  const [confirmPasswordValue, setConfirmPasswordValue] = useState('')
   const [registerErrorMessage, setRegisterErrorMessage] = useState('')
   const [isRegisterSubmitting, setIsRegisterSubmitting] = useState(false)
 
@@ -42,20 +44,43 @@ const Register = () => {
     setPasswordValue(event.target.value)
   }
 
+  const handleChangeConfirmPasswordValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmPasswordValue(event.target.value)
+  }
+
   const handleSubmitRegisterForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (
       usernameValue.trim().length === 0 ||
       emailValue.trim().length === 0 ||
-      passwordValue.trim().length === 0
+      passwordValue.trim().length === 0 ||
+      confirmPasswordValue.trim().length === 0
     ) {
-      setRegisterErrorMessage('Username, email, and password are required.')
+      setRegisterErrorMessage('Username, email, password, and confirm password are required.')
+      return
+    }
+
+    if (passwordValue !== confirmPasswordValue) {
+      setRegisterErrorMessage('')
+
+      return showErrorModal({
+        text: 'Password and confirm password must match.',
+        title: 'Unable to register',
+      }).then(() => {
+        return Promise.resolve()
+      })
+    }
+
+    if (registerErrorMessage.length > 0) {
+      setRegisterErrorMessage('')
+    }
+
+    if (isRegisterSubmitting === true) {
       return
     }
 
     setIsRegisterSubmitting(true)
-    setRegisterErrorMessage('')
 
     return createPasswordHash(passwordValue)
       .then((passwordHash) => {
@@ -141,6 +166,17 @@ const Register = () => {
                       onChange={handleChangePasswordValue}
                       type="password"
                       value={passwordValue}
+                    />
+                  </label>
+
+                  <label className={styles.field}>
+                    <span className={styles.fieldLabel}>Confirm Password</span>
+                    <input
+                      autoComplete="new-password"
+                      name="confirmPassword"
+                      onChange={handleChangeConfirmPasswordValue}
+                      type="password"
+                      value={confirmPasswordValue}
                     />
                   </label>
 

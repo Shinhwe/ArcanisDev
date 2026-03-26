@@ -89,6 +89,26 @@ public sealed class InMemoryAuthRepository : IAuthRepository
         return Task.CompletedTask;
     }
 
+    public Task RevokeAllTokensForUserAsync(long userId, string revokedReason, CancellationToken cancellationToken)
+    {
+        var userTokens = Tokens
+            .Where((tokenRecord) => tokenRecord.UserId == userId && tokenRecord.RevokedAt is null)
+            .ToArray();
+
+        foreach (var userToken in userTokens)
+        {
+            var tokenIndex = Tokens.FindIndex((tokenRecord) => tokenRecord.Id == userToken.Id);
+
+            Tokens[tokenIndex] = userToken with
+            {
+                RevokedAt = DateTime.UtcNow,
+                RevokedReason = revokedReason,
+            };
+        }
+
+        return Task.CompletedTask;
+    }
+
     public AuthTokenRecord SeedToken(long userId, string token)
     {
         var tokenRecord = new AuthTokenRecord(

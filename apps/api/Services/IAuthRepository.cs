@@ -25,6 +25,8 @@ public interface IAuthRepository
 
     Task RevokeTokenAsync(string token, string revokedReason, CancellationToken cancellationToken);
 
+    Task RevokeAllTokensForUserAsync(long userId, string revokedReason, CancellationToken cancellationToken);
+
     Task TouchTokenAsync(string token, CancellationToken cancellationToken);
 
     Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken);

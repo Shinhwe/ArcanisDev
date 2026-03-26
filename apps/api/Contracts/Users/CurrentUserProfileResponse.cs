@@ -3,8 +3,8 @@ public sealed record CurrentUserProfileResponse(
     UserGameAccountResponse GameAccount);
 
 public sealed record UserGameAccountResponse(
-    int DonationPoints,
+    int? DonationPoints,
     bool IsLinked,
-    int MaplePoints,
-    int NxPrepaid,
-    int VotePoints);
+    int? MaplePoints,
+    int? NxPrepaid,
+    int? VotePoints);

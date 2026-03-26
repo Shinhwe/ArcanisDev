@@ -14,13 +14,9 @@ public static class UserProfileEndpoints
 
     private static async Task<Ok<CurrentUserProfileResponse>> HandleGetCurrentUserProfileAsync(
         HttpContext httpContext,
-        IUserProfileRepository userProfileRepository,
         CancellationToken cancellationToken)
     {
         var authContext = httpContext.GetCmsAuthContext()!;
-        var userGameAccountRecord = await userProfileRepository.GetGameAccountByUsernameAsync(
-            authContext.Username,
-            cancellationToken);
 
         return TypedResults.Ok(
             new CurrentUserProfileResponse(
@@ -29,27 +25,11 @@ public static class UserProfileEndpoints
                     Username: authContext.Username,
                     Email: authContext.Email,
                     Role: authContext.Role),
-                GameAccount: CreateUserGameAccountResponse(userGameAccountRecord)));
-    }
-
-    private static UserGameAccountResponse CreateUserGameAccountResponse(
-        UserGameAccountRecord? userGameAccountRecord)
-    {
-        if (userGameAccountRecord is null)
-        {
-            return new UserGameAccountResponse(
-                DonationPoints: 0,
-                IsLinked: false,
-                MaplePoints: 0,
-                NxPrepaid: 0,
-                VotePoints: 0);
-        }
-
-        return new UserGameAccountResponse(
-            DonationPoints: userGameAccountRecord.DonationPoints,
-            IsLinked: true,
-            MaplePoints: userGameAccountRecord.MaplePoints,
-            NxPrepaid: userGameAccountRecord.NxPrepaid,
-            VotePoints: userGameAccountRecord.VotePoints);
+                GameAccount: new UserGameAccountResponse(
+                    DonationPoints: null,
+                    IsLinked: false,
+                    MaplePoints: null,
+                    NxPrepaid: null,
+                    VotePoints: null)));
     }
 }

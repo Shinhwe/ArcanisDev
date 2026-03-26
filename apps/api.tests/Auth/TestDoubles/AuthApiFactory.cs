@@ -12,6 +12,7 @@ public sealed class AuthApiFactory : WebApplicationFactory<Program>
         AuthRepository = new InMemoryAuthRepository();
         DownloadRepository = new InMemoryDownloadRepository();
         UserProfileRepository = new InMemoryUserProfileRepository();
+        UserSettingsRepository = new InMemoryUserSettingsRepository(AuthRepository);
         authTokenFactory = new FakeAuthTokenFactory(nextToken);
     }
 
@@ -20,6 +21,8 @@ public sealed class AuthApiFactory : WebApplicationFactory<Program>
     public InMemoryDownloadRepository DownloadRepository { get; }
 
     public InMemoryUserProfileRepository UserProfileRepository { get; }
+
+    public InMemoryUserSettingsRepository UserSettingsRepository { get; }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -30,16 +33,21 @@ public sealed class AuthApiFactory : WebApplicationFactory<Program>
             serviceCollection.RemoveAll<IAuthTokenFactory>();
             serviceCollection.RemoveAll<IDownloadRepository>();
             serviceCollection.RemoveAll<IUserProfileRepository>();
+            serviceCollection.RemoveAll<IUserSettingsRepository>();
             serviceCollection.RemoveAll<AuthService>();
+            serviceCollection.RemoveAll<UserSettingsService>();
 
             serviceCollection.AddSingleton(AuthRepository);
             serviceCollection.AddSingleton(DownloadRepository);
             serviceCollection.AddSingleton(UserProfileRepository);
+            serviceCollection.AddSingleton(UserSettingsRepository);
             serviceCollection.AddSingleton<IAuthRepository>(AuthRepository);
             serviceCollection.AddSingleton<IDownloadRepository>(DownloadRepository);
             serviceCollection.AddSingleton<IUserProfileRepository>(UserProfileRepository);
+            serviceCollection.AddSingleton<IUserSettingsRepository>(UserSettingsRepository);
             serviceCollection.AddSingleton<IAuthTokenFactory>(authTokenFactory);
             serviceCollection.AddScoped<AuthService>();
+            serviceCollection.AddScoped<UserSettingsService>();
         });
     }
 }

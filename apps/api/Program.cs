@@ -12,8 +12,10 @@ builder.Services.AddSingleton<LegacyCmsConnectionFactory>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IDownloadRepository, DownloadRepository>();
 builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+builder.Services.AddScoped<IUserSettingsRepository, UserSettingsRepository>();
 builder.Services.AddSingleton<IAuthTokenFactory, AuthTokenFactory>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<UserSettingsService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("WebDev", policy =>
@@ -47,6 +49,7 @@ app.MapConfigEndpoints();
 app.MapDownloadEndpoints();
 app.MapAuthEndpoints();
 app.MapUserProfileEndpoints();
+app.MapUserSettingsEndpoints();
 
 app.Run();
 

@@ -5,7 +5,7 @@ using System.Text.Json.Nodes;
 public sealed class UserProfileEndpointTests
 {
     [Fact]
-    public async Task Current_user_profile_returns_auth_user_and_game_account_summary()
+    public async Task Current_user_profile_returns_auth_user_and_unavailable_game_account_summary()
     {
         await using var authApiFactory = new AuthApiFactory("unused-token");
         var seededUser = authApiFactory.AuthRepository.SeedUser(
@@ -28,15 +28,15 @@ public sealed class UserProfileEndpointTests
 
         Assert.Equal("alpha", responsePayload?["user"]?["username"]?.GetValue<string>());
         Assert.Equal("alpha@example.com", responsePayload?["user"]?["email"]?.GetValue<string>());
-        Assert.Equal(0, responsePayload?["gameAccount"]?["votePoints"]?.GetValue<int>());
-        Assert.Equal(0, responsePayload?["gameAccount"]?["donationPoints"]?.GetValue<int>());
-        Assert.Equal(0, responsePayload?["gameAccount"]?["maplePoints"]?.GetValue<int>());
-        Assert.Equal(0, responsePayload?["gameAccount"]?["nxPrepaid"]?.GetValue<int>());
+        Assert.Null(responsePayload?["gameAccount"]?["votePoints"]);
+        Assert.Null(responsePayload?["gameAccount"]?["donationPoints"]);
+        Assert.Null(responsePayload?["gameAccount"]?["maplePoints"]);
+        Assert.Null(responsePayload?["gameAccount"]?["nxPrepaid"]);
         Assert.Equal(false, responsePayload?["gameAccount"]?["isLinked"]?.GetValue<bool>());
     }
 
     [Fact]
-    public async Task Current_user_profile_returns_linked_game_account_values_when_present()
+    public async Task Current_user_profile_ignores_legacy_game_account_records_until_explicit_linking_exists()
     {
         await using var authApiFactory = new AuthApiFactory("unused-token");
         var seededUser = authApiFactory.AuthRepository.SeedUser(
@@ -63,11 +63,11 @@ public sealed class UserProfileEndpointTests
 
         var responsePayload = JsonNode.Parse(await response.Content.ReadAsStringAsync())?.AsObject();
 
-        Assert.Equal(true, responsePayload?["gameAccount"]?["isLinked"]?.GetValue<bool>());
-        Assert.Equal(25, responsePayload?["gameAccount"]?["votePoints"]?.GetValue<int>());
-        Assert.Equal(50, responsePayload?["gameAccount"]?["donationPoints"]?.GetValue<int>());
-        Assert.Equal(75, responsePayload?["gameAccount"]?["maplePoints"]?.GetValue<int>());
-        Assert.Equal(100, responsePayload?["gameAccount"]?["nxPrepaid"]?.GetValue<int>());
+        Assert.Null(responsePayload?["gameAccount"]?["votePoints"]);
+        Assert.Null(responsePayload?["gameAccount"]?["donationPoints"]);
+        Assert.Null(responsePayload?["gameAccount"]?["maplePoints"]);
+        Assert.Null(responsePayload?["gameAccount"]?["nxPrepaid"]);
+        Assert.Equal(false, responsePayload?["gameAccount"]?["isLinked"]?.GetValue<bool>());
     }
 
     [Fact]

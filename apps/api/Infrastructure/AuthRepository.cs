@@ -159,6 +159,27 @@ public sealed class AuthRepository : IAuthRepository
         await databaseCommand.ExecuteNonQueryAsync(cancellationToken);
     }
 
+    public async Task RevokeAllTokensForUserAsync(
+        long userId,
+        string revokedReason,
+        CancellationToken cancellationToken)
+    {
+        const string sql = """
+            UPDATE cms_auth_tokens
+            SET revoked_at = UTC_TIMESTAMP(), revoked_reason = @revokedReason
+            WHERE user_id = @userId AND revoked_at IS NULL;
+            """;
+
+        await using var databaseConnection = legacyCmsConnectionFactory.CreateGameConnection();
+        await databaseConnection.OpenAsync(cancellationToken);
+        await using var databaseCommand = new MySqlCommand(sql, databaseConnection);
+
+        databaseCommand.Parameters.AddWithValue("@userId", userId);
+        databaseCommand.Parameters.AddWithValue("@revokedReason", revokedReason);
+
+        await databaseCommand.ExecuteNonQueryAsync(cancellationToken);
+    }
+
     public async Task TouchTokenAsync(string token, CancellationToken cancellationToken)
     {
         const string sql = """
